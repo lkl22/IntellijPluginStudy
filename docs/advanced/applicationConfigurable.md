@@ -163,6 +163,8 @@ public class SingleFileExecutionConfigurableGUI {
 ```
 > **Note** that I only implement empty `constuctor` and `getRootPanel` method.
 
+您可以通过配置 `File → Settings → Editor > GUI Designer → Generate GUI info → tick “Java source code” (“Binary class files” is selected as default) `来更容易地理解这种关系。
+
 要从`SingleFileExecutionConfigurable`类获取此GUI，请按以下方式实现`createComponent`和`disposeUIResources`：
 ```java
 public class SingleFileExecutionConfigurable implements SearchableConfigurable {
