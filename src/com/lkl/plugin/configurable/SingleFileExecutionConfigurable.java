@@ -10,48 +10,21 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public class SingleFileExecutionConfigurable implements SearchableConfigurable {
-    SingleFileExecutionConfigurableGUI mGUI;
-    Project mProject;
-    SingleFileExecutionConfig mConfig;
+    private SingleFileExecutionConfigurableGUI mGUI;
+    private final SingleFileExecutionConfig mConfig;
+
+    @SuppressWarnings("FieldCanBeLocal")
+    private final Project mProject;
 
     public SingleFileExecutionConfigurable(@NotNull Project project) {
-        // you can get project instance as an argument of constructor
         mProject = project;
         mConfig = SingleFileExecutionConfig.getInstance(project);
     }
 
-    @Nullable
-    @Override
-    public JComponent createComponent() {
-        mGUI = new SingleFileExecutionConfigurableGUI();
-        return mGUI.getRootPanel();
-    }
-
-    @Override
-    public void disposeUIResources() {
-        mGUI = null;
-    }
-
-    @NotNull
-    @Override
-    public String getId() {
-        return "preference.SingleFileExecutionConfigurable";
-    }
-
-    @Nls(capitalization = Nls.Capitalization.Title)
+    @Nls
     @Override
     public String getDisplayName() {
         return "Single File Execution Plugin";
-    }
-
-    @Override
-    public boolean isModified() {
-        return false;
-    }
-
-    @Override
-    public void apply() throws ConfigurationException {
-
     }
 
     @Nullable
@@ -60,8 +33,43 @@ public class SingleFileExecutionConfigurable implements SearchableConfigurable {
         return "preference.SingleFileExecutionConfigurable";
     }
 
+    @NotNull
+    @Override
+    public String getId() {
+        return "preference.SingleFileExecutionConfigurable";
+    }
+
+    @Nullable
+    @Override
+    public Runnable enableSearch(String s) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public JComponent createComponent() {
+        mGUI = new SingleFileExecutionConfigurableGUI();
+        mGUI.createUI(mProject);
+        return mGUI.getRootPanel();
+    }
+
+    @Override
+    public boolean isModified() {
+        return mGUI.isModified();
+    }
+
+    @Override
+    public void apply() throws ConfigurationException {
+        mGUI.apply();
+    }
+
     @Override
     public void reset() {
+        mGUI.reset();
+    }
 
+    @Override
+    public void disposeUIResources() {
+        mGUI = null;
     }
 }

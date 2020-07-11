@@ -1,8 +1,8 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>com.lkl.plugin.IdeaPluginStudy</id>
+  <name>IdeaPluginStudy</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="sz.lkl@163.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
   <description><![CDATA[
       Enter short description for your plugin here.<br>
@@ -23,6 +23,7 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+  <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
@@ -60,6 +61,12 @@
     </action>
     <action id="IdeaPluginStudy.InsertCharAction" class="com.lkl.plugin.InsertCharAction" text="InsertCharAction"
             description="在输入字符的同时，在文档的开头也插入同样的字符">
+    </action>
+    <action id="IdeaPluginStudy.SingleFileExecutionAction" class="com.lkl.plugin.configurable.SingleFileExecutionAction" text="Add executable for single c/cpp file"
+            description="Adding add_executable() to CMakeLists.txt">
+      <add-to-group group-id="CodeMenu" anchor="last"/>
+      <add-to-group group-id="EditorPopupMenu"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt E"/>
     </action>
   </actions>
 

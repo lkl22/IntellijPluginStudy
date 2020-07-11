@@ -29,7 +29,7 @@
 |isModified()|This is to enable/disable “apply” button in the Setting dialog.<br>Return true when you want to enable “apply” button.<br>您需要实现一种逻辑来检查配置是否已更新，并决定返回true或false
 |apply()|It is called when “apply” or “ok” button is pressed.<br>Implement a logic to update configuration.
 ||
-|reset()|It is called when “apply” or “ok” button is pressed.<br>Implement a logic to reset the configuration.
+|reset()|It is called when the user clicks the ”Cancel” button<br>Implement a logic to reset the configuration.
 |disposeUIResources()|It is called when UI component becomes not necessary.<br>You can implement finalization logic here to release memory.
 |enableSearch(String s)|It can be null. You can set some action to be performed when searched.
 |getHelpTopic()|Ex "preference.SingleFileExecutionConfigurable"
