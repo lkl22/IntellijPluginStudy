@@ -7,6 +7,10 @@ idea plugin开发研究
 * [Action机制](./docs/base/action.md)
 * [插件开发之Editor](./docs/base/editor.md)
 
+## idea plugin进阶
+
+* [IntelliJ插件开发：ApplicationConfigurable，ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
+* [generate-tostring](./docs/advanced/generateTostring.md)
 
 ## 参考文献
 
