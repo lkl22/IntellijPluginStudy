@@ -9,7 +9,8 @@ idea plugin开发研究
 
 ## idea plugin进阶
 
-* [IntelliJ插件开发：ApplicationConfigurable，ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
+* [IntelliJ Plugin Development introduction: PersistStateComponent](./docs/advanced/persistStateComponent.md)
+* [IntelliJ Plugin Development introduction：ApplicationConfigurable，ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
 * [generate-tostring](./docs/advanced/generateTostring.md)
 
 ## 参考文献

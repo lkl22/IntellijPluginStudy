@@ -1,11 +1,11 @@
-# IntelliJ插件开发：ApplicationConfigurable，ProjectConfigurable
+# IntelliJ Plugin Development introduction：ApplicationConfigurable，ProjectConfigurable
 
 * [可配置–将“插件”的配置菜单添加到“设置”对话框](#将插件的配置菜单添加到设置对话框)
-* [使类实现Configurable](#使类实现Configurable)
+* [使类实现Configurable](#使类实现configurable)
 * [修改plugin.xml](#修改pluginxml)
-* [制作GUI类](#制作GUI类)
+* [制作GUI类](#制作gui类)
 * [获取项目实例](#获取项目实例)
-* [使用PersistentStateComponent保存配置](#使用PersistentStateComponent保存配置)
+* [使用PersistentStateComponent保存配置](#使用persistentstatecomponent保存配置)
 * [参考文献](#参考文献)
 
 ## <a name="将插件的配置菜单添加到设置对话框">可配置–将“插件”的配置菜单添加到“设置”对话框</a>
@@ -15,7 +15,7 @@
 * [Customizing the IDEA Settings Dialog](https://confluence.jetbrains.com/display/IDEADEV/Customizing+the+IDEA+Settings+Dialog)
 * [Configurable IDEA](https://sites.google.com/site/malenkov/java/150403)
 
-## <a name="使类实现Configurable">使类实现Configurable</a>
+## <a name="使类实现configurable">使类实现Configurable</a>
 
 首先，创建新的Java类 `SingleFileExecutionConfigurable.java`。 让此类实现`SearchableConfigurable`。
 
@@ -132,7 +132,7 @@ public class SingleFileExecutionConfigurable implements SearchableConfigurable {
 
 我们可以看到我们的配置显示出现在设置中的`Tools`选项卡内，`plugin.xml`的`groupId`属性中所指定。目前，该对话框的右侧没有UI，由于`createComponent`方法返回null。
 
-## <a name="制作GUI类">制作GUI类</a>
+## <a name="制作gui类">制作GUI类</a>
 
 我们要设计用于配置的UI，可以通过GUI形式进行设计。 我们可以通过右键单击`src→New→Swing UI Designer→GUI form`来生成GUI表单，一组JAVA类和表单。 如果您不熟悉IntelliJ插件的UI开发，请查看[“搜索IntelliJ插件开发简介”：GUI表单设计](http://corochann.com/intellij-plugin-development-introduction-gui-form-designing-876.html)
 
@@ -197,7 +197,7 @@ public class SingleFileExecutionConfigurable implements SearchableConfigurable {
     }
 ```
 
-## <a name="使用PersistentStateComponent保存配置">使用PersistentStateComponent保存配置</a>
+## <a name="使用persistentstatecomponent保存配置">使用PersistentStateComponent保存配置</a>
 
 最后一步，我们需要将用户的配置保存到存储中。 我们可以使用IntelliJ的PersistentStateComponent来实现。 这与Android平台的首选项相似，因此该值可以xml格式存储，我们可以将这些值提取到JAVA文件中。
 
