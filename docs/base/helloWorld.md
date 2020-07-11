@@ -5,7 +5,7 @@
 * [下载IntelliJ IDEA](#下载IntelliJIDEA)
 * [创建项目](#创建项目)
 * [创建Action](#创建Action)
-* [plugin.xml](#plugin.xml)
+* [plugin.xml](#pluginxml)
 * [运行](#运行)
 * [卸载插件](#卸载插件)
 * [打包插件并在AndroidStudio中安装](#打包插件并在AndroidStudio中安装)
@@ -69,7 +69,7 @@ public class HelloWorldPlugin extends AnAction {
 }
 ```
 
-## <a name="plugin.xml">plugin.xml</a>
+## <a name="pluginxml">plugin.xml</a>
 
 通过上一步生成的Action会在`plugin.xml`中的`<actions>`标签中添加`<action>`子标签，如下所示：
                                       
@@ -107,6 +107,8 @@ public class HelloWorldPlugin extends AnAction {
 
 <font color=red>`relative-to-action`</font>也是<font color=red>`<add-to-group>`</font>的属性。
 
+`<keyboard-shortcut>`标签用于描述快捷键，主要关注2个属性：`keymap`和`first-keystroke`。`keymap`使用默认值（`$default`）就好，`first-keystroke`用于指定快捷键。
+
 ## <a name="运行">运行</a>
 
 点击运行。会发现，运行时是自动再启动新的IntelliJ IDEA。而新启动的IntelliJ IDEA由于没有可打开的项目会停留在如下界面：
@@ -119,7 +121,7 @@ public class HelloWorldPlugin extends AnAction {
 
 ![](./imgs/helpMenu.png)
 
-点击·”Hello World”项，运行如下：
+点击·”HelloWorld”项，运行如下：
 
 ![](./imgs/message.png)
 

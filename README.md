@@ -4,6 +4,7 @@ idea plugin开发研究
 ## idea plugin基础
 
 * [编写你的第一个plugin Hello World](./docs/base/helloWorld.md)
+* [Action机制](./docs/base/action.md)
 
 
 ## 参考文献

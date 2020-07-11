@@ -35,6 +35,16 @@
       <add-to-group group-id="HelpMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift meta A"/>
     </action>
+    <group id="IdeaPluginStudy.MyGroup1" class="com.lkl.plugin.MyGroup1" text="_MyGroup1" popup="true">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <action class="com.lkl.plugin.MyAction" id="IdeaPluginStudy.MyAction" text="Hello Action">
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Q"/>
+      </action>
+      <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.SecondAction" text="SecondAction"/>
+    </group>
+    <group id="IdeaPluginStudy.MyGroup" class="com.lkl.plugin.MyGroup" text="_MyGroup" popup="true">
+      <add-to-group group-id="MainMenu" anchor="last"/>
+    </group>
   </actions>
 
 </idea-plugin>
