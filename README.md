@@ -5,6 +5,7 @@ idea plugin开发研究
 
 * [编写你的第一个plugin Hello World](./docs/base/helloWorld.md)
 * [Action机制](./docs/base/action.md)
+* [插件开发之Editor](./docs/base/editor.md)
 
 
 ## 参考文献
@@ -16,3 +17,5 @@ idea plugin开发研究
 [IntelliJ Platform SDK](https://www.jetbrains.org/intellij/sdk/docs/intro/welcome.html)
 
 [https://www.jetbrains.com/help/idea/getting-started.html](https://www.jetbrains.com/help/idea/getting-started.html)
+
+[https://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics.html](https://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics.html)

@@ -3,6 +3,10 @@ package com.lkl.plugin;
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.editor.CaretModel;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +25,13 @@ public class MyGroup extends ActionGroup {
             super(text);
         }
         @Override
-        public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
+        public void actionPerformed(@NotNull AnActionEvent e) {
+            Editor editor = e.getData(PlatformDataKeys.EDITOR);
+            if (editor == null)
+                return;
+
+            SelectionModel selectionModel = editor.getSelectionModel();
+            CaretModel caretModel=editor.getCaretModel();
         }
     }
 }
