@@ -28,6 +28,16 @@ idea plugin开发研究
 
 [AndroidStudio插件开发（进阶篇之Action机制）](https://blog.csdn.net/huachao1001/article/details/53883500)
 
+[IntelliJ IDEA插件开发](https://blog.csdn.net/O4dC8OjO7ZL6/article/details/79722289)
+
+[AS插件开发：根据特定格式的文本自动生成Java Bean文件或字段](https://blog.csdn.net/qq_27258799/article/details/79295251)
+
+[https://www.cnblogs.com/liqiking/p/6792991.html](https://www.cnblogs.com/liqiking/p/6792991.html)
+
+[震惊！！！编码速度提高10倍的秘诀是....](https://blog.csdn.net/y4x5M0nivSrJaY3X92c/article/details/106131947)
+
+[lombok-intellij-plugin](https://github.com/mplushnikov/lombok-intellij-plugin)
+
 [IntelliJ Platform SDK](https://www.jetbrains.org/intellij/sdk/docs/intro/welcome.html)
 
 [https://www.jetbrains.com/help/idea/getting-started.html](https://www.jetbrains.com/help/idea/getting-started.html)
