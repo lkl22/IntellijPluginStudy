@@ -7,10 +7,16 @@ idea plugin开发研究
 * [Action机制](./docs/base/action.md)
 * [插件开发之Editor](./docs/base/editor.md)
 
+## Program Structure Interface (PSI)
+
+程序结构接口（通常称为PSI）是IntelliJ平台中的一层，负责解析文件并创建语法和语义代码模型，以支持该平台的许多功能。
+
+* [PsiAugmentProvider](./docs/psi/psiAugmentProvider.md)
+
 ## idea plugin进阶
 
 * [IntelliJ Plugin Development introduction: PersistStateComponent](./docs/advanced/persistStateComponent.md)
-* [IntelliJ Plugin Development introduction：ApplicationConfigurable，ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
+* [IntelliJ Plugin Development introduction: ApplicationConfigurable, ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
 * [generate-tostring](./docs/advanced/generateTostring.md)
 
 ## 参考文献

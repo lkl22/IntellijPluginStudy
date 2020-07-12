@@ -1,4 +1,4 @@
-# IntelliJ Plugin Development introduction：ApplicationConfigurable，ProjectConfigurable
+# IntelliJ Plugin Development introduction: ApplicationConfigurable, ProjectConfigurable
 
 * [可配置–将“插件”的配置菜单添加到“设置”对话框](#将插件的配置菜单添加到设置对话框)
 * [使类实现Configurable](#使类实现configurable)

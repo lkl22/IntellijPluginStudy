@@ -29,12 +29,12 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.util.IncorrectOperationException;
+import com.lkl.plugin.tostring.template.TemplateResource;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.java.generate.GenerateToStringContext;
 import org.jetbrains.java.generate.config.*;
 import org.jetbrains.java.generate.exception.GenerateCodeException;
 import org.jetbrains.java.generate.psi.PsiAdapter;
-import org.jetbrains.java.generate.template.TemplateResource;
 import org.jetbrains.java.generate.view.MethodExistsDialog;
 
 import java.util.*;
