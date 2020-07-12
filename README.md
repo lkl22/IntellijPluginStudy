@@ -14,6 +14,7 @@ idea plugin开发研究
 
 * [介绍](./docs/psi/introduction.md)
 * [PsiAugmentProvider](./docs/psi/psiAugmentProvider.md)
+* [StructureViewExtension](./docs/psi/structureViewExtension.md)
 
 ## idea plugin进阶
 
