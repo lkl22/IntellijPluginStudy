@@ -1,6 +1,8 @@
 # IdeaPluginStudy
 idea plugin开发研究
 
+open第三方开源plugin项目时，需要在项目根目录下的*.iml文件修改一下module type为`<module type="PLUGIN_MODULE" version="4">`
+
 ## idea plugin基础
 
 * [编写你的第一个plugin Hello World](./docs/base/helloWorld.md)
