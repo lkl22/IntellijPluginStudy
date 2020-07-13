@@ -39,7 +39,7 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="IdeaPluginStudy.HelloWorld" class="com.lkl.plugin.HelloWorldPlugin" text="HelloWorld"
+    <action id="IdeaPluginStudy.HelloWorld" class="com.lkl.plugin.base.HelloWorldPlugin" text="HelloWorld"
             description="first plugin Hello World">
       <add-to-group group-id="HelpMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift meta A"/>
