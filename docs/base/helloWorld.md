@@ -74,7 +74,6 @@ public class HelloWorldPlugin extends AnAction {
 通过上一步生成的Action会在`plugin.xml`中的`<actions>`标签中添加`<action>`子标签，如下所示：
                                       
 ```xml
-```xml
   <actions>
     <!-- Add your actions here -->
     <action id="IdeaPluginStudy.HelloWorld" class="com.lkl.plugin.base.HelloWorldPlugin" text="HelloWorld"

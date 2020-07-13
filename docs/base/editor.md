@@ -96,7 +96,7 @@ SelectionModel对象用于描述光标选中的文本段，通过`SelectionModel
 ```xml
   <actions>
     <!-- Add your actions here -->
-    <action id="IdeaPluginStudy.GetterAndSetter" class="com.lkl.plugin.GetterAndSetter" text="Getter And Setter"
+    <action id="IdeaPluginStudy.GetterAndSetter" class="com.lkl.plugin.base.GetterAndSetter" text="Getter And Setter"
             description="生成Getter和Setter方法">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
@@ -232,7 +232,7 @@ public void actionPerformed(AnActionEvent e) {
 为了监听按键事件，专门提供了`TypedActionHandler`类，我们只需继承`TypedActionHandler`，并重写`execute`函数即可。注意，只能监听可打印字符对应的按键。
 
 ```java
-package com.lkl.plugin;
+package com.lkl.plugin.base;
 
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Editor;

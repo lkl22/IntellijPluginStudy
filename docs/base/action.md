@@ -173,15 +173,14 @@ public class PlatformDataKeys extends CommonDataKeys {
 * popup属性用于描述是否有子菜单弹出，如果取值为true，则<group>标签的内所有的<action>子标签作为<group>菜单的子选项，否则，<group>标签的内所有的<action>子标签将替换<group>菜单项所在的位置，即没有<group>这一层菜单。
 
 ```xml
-```xml
   <actions>
     <!-- Add your actions here -->
-    <group id="IdeaPluginStudy.MyGroup" text="_MyGroup" popup="true">
+    <group id="IdeaPluginStudy.MyGroup1" text="_MyGroup" popup="true">
       <add-to-group group-id="HelpMenu" anchor="first"/>
       <action id="IdeaPluginStudy.MyAction" class="com.lkl.plugin.base.MyAction" text="Hello Action">
         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Q"/>
       </action>
-      <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.SecondAction" text="SecondAction"/>
+      <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.base.SecondAction" text="SecondAction"/>
     </group>
   </actions>
 ```
@@ -245,7 +244,6 @@ public class MyGroup extends ActionGroup {
 ```
 
 plugin.xml文件中对应的`<actions>`标签如下：
-```xml
 ```xml
   <actions>
     <!-- Add your actions here -->
