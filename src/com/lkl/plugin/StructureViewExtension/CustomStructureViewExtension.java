@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class CustomStructureViewExtension extends StructureViewExtension {
+public class CustomStructureViewExtension implements StructureViewExtension {
     @Override
     public Class<? extends PsiElement> getType() {
         return null;

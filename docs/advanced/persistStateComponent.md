@@ -115,6 +115,8 @@ Example:
 ```
 要更新值，您可以直接更新此实例的字段变量`（mConfig）`。不需要显式的`“save”`方法调用！下次获取值时，该值将自动保存。
 
+> **注意**：`public SingleFileExecutionConfigurable(@NotNull Project project)` 接收project作为参数时，在 `plugin.xml` 中一定要声明为 `projectConfigurable`
+
 下面的代码是变量更新部分的示例。 当用户在“设置”对话框中更改配置时，将调用此`apply()`方法。
 ```java
     public void apply() {

@@ -27,7 +27,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
-    <applicationConfigurable
+    <projectConfigurable
             groupId="tools"
             displayName="Single File Execution Plugin"
             id="preferences.SingleFileExecutionConfigurable"
@@ -68,10 +68,10 @@
       <add-to-group group-id="EditorPopupMenu"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt E"/>
     </action>
-    <action id="IdeaPluginStudy.GenerateToStringAction" class="com.lkl.plugin.tostring.GenerateToStringAction" text="GenerateToStringAction"
+   <!-- <action id="IdeaPluginStudy.GenerateToStringAction" class="com.lkl.plugin.tostring.GenerateToStringAction" text="GenerateToStringAction"
             description="GenerateToStringAction">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-    </action>
+    </action>-->
   </actions>
 
 </idea-plugin>
