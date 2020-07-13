@@ -44,14 +44,14 @@
       <add-to-group group-id="HelpMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift meta A"/>
     </action>
-    <group id="IdeaPluginStudy.MyGroup1" class="com.lkl.plugin.MyGroup1" text="_MyGroup1" popup="true">
+    <group id="IdeaPluginStudy.MyGroup1" class="com.lkl.plugin.base.MyGroup1" text="_MyGroup1" popup="true">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-      <action class="com.lkl.plugin.MyAction" id="IdeaPluginStudy.MyAction" text="Hello Action">
+      <action id="IdeaPluginStudy.MyAction" class="com.lkl.plugin.base.MyAction" text="Hello Action">
         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Q"/>
       </action>
-      <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.SecondAction" text="SecondAction"/>
+      <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.base.SecondAction" text="SecondAction"/>
     </group>
-    <group id="IdeaPluginStudy.MyGroup" class="com.lkl.plugin.MyGroup" text="_MyGroup" popup="true">
+    <group id="IdeaPluginStudy.MyGroup" class="com.lkl.plugin.base.MyGroup" text="_MyGroup" popup="true">
       <add-to-group group-id="MainMenu" anchor="last"/>
     </group>
     <action id="IdeaPluginStudy.GetterAndSetter" class="com.lkl.plugin.GetterAndSetter" text="Getter And Setter"

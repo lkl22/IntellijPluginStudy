@@ -22,7 +22,7 @@
 
 重写actionPerformed函数非常简单，例如弹出一个Hello World：
 ```java
-package com.lkl.plugin;
+package com.lkl.plugin.base;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -77,11 +77,11 @@ public class HelloWorldPlugin extends AnAction {
 
 当编辑框被打开时（即有文件打开时）：
 
-![](./imgs/openEditor.png)
+![](imgs/action/openEditor.png)
 
 当编辑框被关闭时（即没有文件被打开时）：
 
-![](./imgs/closeEditor.png)
+![](imgs/action/closeEditor.png)
 
 ### <a name="关于AnActionEvent">1.3 关于AnActionEvent</a>
 
@@ -173,11 +173,12 @@ public class PlatformDataKeys extends CommonDataKeys {
 * popup属性用于描述是否有子菜单弹出，如果取值为true，则<group>标签的内所有的<action>子标签作为<group>菜单的子选项，否则，<group>标签的内所有的<action>子标签将替换<group>菜单项所在的位置，即没有<group>这一层菜单。
 
 ```xml
+```xml
   <actions>
     <!-- Add your actions here -->
     <group id="IdeaPluginStudy.MyGroup" text="_MyGroup" popup="true">
       <add-to-group group-id="HelpMenu" anchor="first"/>
-      <action class="com.lkl.plugin.MyAction" id="IdeaPluginStudy.MyAction" text="Hello Action">
+      <action id="IdeaPluginStudy.MyAction" class="com.lkl.plugin.base.MyAction" text="Hello Action">
         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Q"/>
       </action>
       <action id="IdeaPluginStudy.SecondAction" class="com.lkl.plugin.SecondAction" text="SecondAction"/>
@@ -187,23 +188,23 @@ public class PlatformDataKeys extends CommonDataKeys {
 
 运行结果如下：
 
-![](./imgs/groupActionPopupTrue.png)
+![](imgs/action/groupActionPopupTrue.png)
 
 将popup属性改为`false`运行结果如下：
 
-![](./imgs/groupActionPopupFalse.png)
+![](imgs/action/groupActionPopupFalse.png)
 
 将group-id属性指定为`MainMenu`,运行如下：
 
-![](./imgs/groupIdMainMenu.png)
+![](imgs/action/groupIdMainMenu.png)
 
 可以看到，IDEA的所有的导航菜单都放在`MainMenu`中，我们指定了`anchor="first"`，因此被加入第一个位置。接下来我们再看看将group加入到编辑框窗口右键菜单，只需将group-id属性指定为`EditorPopupMenu`,运行如下：
 
-![](./imgs/groupIdEditorPopupMenu.png)
+![](imgs/action/groupIdEditorPopupMenu.png)
 
 修改为项目窗口右键菜单，修改group-id为：`ProjectViewPopupMenu`。运行如下：
 
-![](./imgs/groupIdProjectViewPopupMenu.png)
+![](imgs/action/groupIdProjectViewPopupMenu.png)
 
 ### <a name="IDEA自动注册Action">2.2 IDEA自动注册Action</a>
 
@@ -214,7 +215,7 @@ public class PlatformDataKeys extends CommonDataKeys {
 代码动态注册Action主要是以`Action Group`动态添加和移除`Action`。前面我们在使用<group>标签时，没有使用到class属性，即我们没有定义自己的Action Group，而是使用默认的`Action Group（DefaultActionGroup）`。为了定制自己的Action Group，我们定义MyGroup类，使之继承ActionGroup类，并在<group>标签的class属性中指定com.lkl.plugin.MyGroup。
 
 ```java
-package com.lkl.plugin;
+package com.lkl.plugin.base;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -245,9 +246,10 @@ public class MyGroup extends ActionGroup {
 
 plugin.xml文件中对应的`<actions>`标签如下：
 ```xml
+```xml
   <actions>
     <!-- Add your actions here -->
-    <group id="IdeaPluginStudy.MyGroup" class="com.lkl.plugin.MyGroup" text="_MyGroup" popup="true">
+    <group id="IdeaPluginStudy.MyGroup" class="com.lkl.plugin.base.MyGroup" text="_MyGroup" popup="true">
       <add-to-group group-id="MainMenu" anchor="last"/>
     </group>
   </actions>
@@ -255,12 +257,12 @@ plugin.xml文件中对应的`<actions>`标签如下：
 
 运行结果如下：
 
-![](./imgs/codeCreateGroup.png)
+![](imgs/action/codeCreateGroup.png)
 
 如果我们想在plugin.xml中注册Action，并且想修改Group的菜单属性。我们只需重写`DefaultActionGroup`的`update`函数，DefaultActionGroup的update函数与AnAction的update函数意义差不多。例如，我们将Group菜单添加一个图标，代码如下：
 
 ```java
-package com.lkl.plugin;
+package com.lkl.plugin.base;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -284,7 +286,7 @@ public class MyGroup1 extends DefaultActionGroup {
 
 运行结果如下：
 
-![](./imgs/defaultActionGroup.png)
+![](imgs/action/defaultActionGroup.png)
 
 ## <a name="参考资料">参考资料</a>
 

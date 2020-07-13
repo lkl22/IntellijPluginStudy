@@ -1,4 +1,4 @@
-package com.lkl.plugin;
+package com.lkl.plugin.base;
 
 import com.intellij.openapi.actionSystem.ActionGroup;
 import com.intellij.openapi.actionSystem.AnAction;
