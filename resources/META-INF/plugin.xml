@@ -23,7 +23,6 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
-  <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
@@ -35,6 +34,11 @@
     <projectService
             serviceInterface="com.lkl.plugin.configurable.SingleFileExecutionConfig"
             serviceImplementation="com.lkl.plugin.configurable.SingleFileExecutionConfig"/>
+
+    <applicationService serviceInterface="com.lkl.plugin.codegenerator.config.CodeGeneratorSettings"
+                        serviceImplementation="com.lkl.plugin.codegenerator.config.CodeGeneratorSettings"/>
+
+    <applicationConfigurable instance="com.lkl.plugin.codegenerator.ui.CodeGeneratorConfigurable"/>
   </extensions>
 
   <actions>
@@ -72,6 +76,12 @@
             description="GenerateToStringAction">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
     </action>-->
+    <group id="IdeaPluginStudy.CodeGeneratorMenu" class="com.lkl.plugin.codegenerator.action.CodeGeneratorGroup" text="MyCodeGenerator"
+           description="Code Generator" popup="true">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="ProjectViewPopupMenuRefactoringGroup"/>
+      <!--<add-to-group group-id="GenerateGroup" anchor="last"/>-->
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+    </group>
   </actions>
 
 </idea-plugin>
