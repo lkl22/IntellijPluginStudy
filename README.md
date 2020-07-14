@@ -38,6 +38,8 @@ open第三方开源plugin项目时，需要在项目根目录下的*.iml文件�
 
 [震惊！！！编码速度提高10倍的秘诀是....](https://blog.csdn.net/y4x5M0nivSrJaY3X92c/article/details/106131947)
 
+[https://github.com/longforus/MvpAutoCodePlus](https://github.com/longforus/MvpAutoCodePlus)
+
 [lombok-intellij-plugin](https://github.com/mplushnikov/lombok-intellij-plugin)
 
 [IntelliJ Platform SDK](https://www.jetbrains.org/intellij/sdk/docs/intro/welcome.html)
@@ -45,3 +47,5 @@ open第三方开源plugin项目时，需要在项目根目录下的*.iml文件�
 [https://www.jetbrains.com/help/idea/getting-started.html](https://www.jetbrains.com/help/idea/getting-started.html)
 
 [https://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics.html](https://www.jetbrains.org/intellij/sdk/docs/tutorials/editor_basics.html)
+
+[http://velocity.apache.org/](http://velocity.apache.org/)
