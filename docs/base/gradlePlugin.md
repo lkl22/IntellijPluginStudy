@@ -6,6 +6,12 @@
   * [向现有的基于DevKit的IntelliJ平台插件添加Gradle支持](#向现有的基于DevKit的IntelliJ平台插件添加Gradle支持)
   * [运行基于简单Gradle的IntelliJ平台插件](#运行基于简单Gradle的IntelliJ平台插件)
 * [Configuring Gradle Projects](#ConfiguringGradleProjects)
+  * [配置Gradle插件以构建IntelliJ平台插件项目](#配置Gradle插件以构建IntelliJ平台插件项目)
+  * [配置Gradle插件以运行IntelliJ Platform插件项目](#配置Gradle插件以运行IntelliJPlatform插件项目)
+  * [Gradle插件使用的管理目录](#Gradle插件使用的管理目录)
+  * [通过Gradle插件控制下载](#通过Gradle插件控制下载)
+  * [Patching the Plugin Configuration File](#PatchingthePluginConfigurationFile)
+  * [用于开发的通用Gradle插件配置](#用于开发的通用Gradle插件配置)
 * [参考文献](#参考文献)
 
 ## <a name="简介">简介</a>
@@ -180,6 +186,97 @@ patchPluginXml {
 最后，在IDE开发实例中启动`my_gradle_plugin`时，“工具”菜单下应有一个新菜单。
 
 ## <a name="ConfiguringGradleProjects">Configuring Gradle Projects</a>
+
+### <a name="配置Gradle插件以构建IntelliJ平台插件项目">配置Gradle插件以构建IntelliJ平台插件项目</a>
+
+默认情况下，Gradle插件将针对由IntelliJ IDEA社区版的最新EAP快照定义的IntelliJ平台构建一个插件项目。
+
+> 使用IntelliJ Platform的EAP版本需要将Snapshots存储库添加到build.gradle文件中（请参阅[IntelliJ Platform Artifacts存储库](https://jetbrains.org/intellij/sdk/docs/reference_guide/intellij_artifacts.html)）。
+
+如果本地计算机上没有可用的指定IntelliJ Platform的匹配版本，则Gradle插件将下载正确的版本和类型。然后，IntelliJ IDEA会索引构建以及任何相关的源代码和JetBrains Java Runtime。
+
+#### IntelliJ平台配置
+
+显示设置 [Setup DSL](https://github.com/JetBrains/gradle-intellij-plugin#setup-dsl) 属性`intellij.version`和`intellij.type`会告诉Gradle插件使用`IntelliJ Platform`的配置来构建插件项目。
+
+可以在 [IntelliJ Platform Artifacts Repositories](https://jetbrains.org/intellij/sdk/docs/reference_guide/intellij_artifacts.html) 中浏览所有可用的平台版本。
+
+如果存储库中没有可用的所选平台版本，或者目标IDE的本地安装是IntelliJ Platform的所需类型和版本，请使用`intellij.localPath`指向该安装。 **如果设置了`intellij.localPath`属性，请不要设置`intellij.version`和`intellij.type`属性**，因为这可能导致未定义的行为。
+
+#### 插件依赖
+
+IntelliJ Platform插件项目可能取决于捆绑的插件或第三方插件。 在这种情况下，应根据与用于构建插件项目的`IntelliJ Platform`版本相匹配的那些插件的版本来构建项目。 Gradle插件将获取`intellij.plugins`定义的列表中的所有插件。 有关指定插件和版本的信息，请参见Gradle插件自述文件。
+
+请注意，此属性描述了一个依赖项，因此Gradle插件可以获取所需的`artifacts`。 如[插件依赖](https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_dependencies.html#3-dependency-declaration-in-pluginxml)关系中所述，必须将运行时依赖关系添加到[插件配置](https://jetbrains.org/intellij/sdk/docs/basics/plugin_structure/plugin_configuration_file.html)（`plugin.xml`）文件中。
+
+### <a name="配置Gradle插件以运行IntelliJPlatform插件项目">配置Gradle插件以运行IntelliJ Platform插件项目</a>
+
+默认情况下，Gradle插件将为IDE开发实例使用与构建插件相同版本的IntelliJ平台。默认情况下也使用相应的`JetBrains Runtime`。
+
+#### 在基于IntelliJ平台的IDE的替代版本和类型上运行
+
+用于开发实例的IntelliJ Platform IDE可以与用于构建插件项目的IntelliJ Platform IDE不同。 设置“Running DSL”属性`runIde.ideDirectory`将定义要用于开发实例的IDE。 在替代的基于IntelliJ平台的IDE中运行或调试插件时，通常使用此属性。
+
+#### 在JetBrains运行时的替代版本上运行
+
+IntelliJ Platform的每个版本都有对应的`JetBrains Runtime`版本。 通过指定`runIde.jbrVersion`属性，可以使用不同版本的Runtime，该属性描述了IDE开发实例应使用的JetBrains运行时的版本。 Gradle插件将根据需要获取指定的`JetBrains Runtime`。
+
+### <a name="Gradle插件使用的管理目录">Gradle插件使用的管理目录</a>
+
+有几个属性可以控制Gradle插件在何处放置目录以供下载以及供IDE开发实例使用。
+
+可以使用Gradle插件属性控制[沙箱主目录](https://jetbrains.org/intellij/sdk/docs/basics/ide_development_instance.html#sandbox-home-location-for-gradle-based-plugin-projects)及其子目录的位置。 `intellij.sandboxDirectory`属性用于设置在IDE开发实例中运行插件时要使用的沙箱目录的路径。 可以使用`runIde.configDirectory`，`runIde.pluginsDirectory`和`runIde.systemDirectory`属性控制沙箱子目录的位置。 如果显式设置了`intellij.sandboxDirectory`路径，则子目录属性默认为新的沙箱目录。
+
+下载的IDE版本和组件的存储位置默认为**Gradle缓存目录**。 但是，可以通过设置`intellij.ideaDependencyCachePath`属性来控制它。
+
+### <a name="通过Gradle插件控制下载">通过Gradle插件控制下载</a>
+
+如有关配置用于构建插件项目的IntelliJ Platform的部分所述，Gradle插件将获取默认值或intellij属性指定的IntelliJ Platform版本。 **跨项目标准化Gradle插件和Gradle系统的版本将最大程度减少下载版本所花费的时间**。
+
+有一些用于管理`gradle-intellij-plugin`版本和`Gradle`本身版本的控件。 插件版本在项目的`build.gradle`文件的`plugins {}`部分中定义。 Gradle的版本在`<PROJECT ROOT>/gradle/wrapper/gradle-wrapper.properties`中定义。
+
+### <a name="PatchingthePluginConfigurationFile">Patching the Plugin Configuration File</a>
+
+插件项目的plugin.xml文件具有在构建时从`patchPluginXml task`（Patching DSL）的属性中“`patched`”的元素值。`Patching DSL`中的尽可能多的属性将替换为插件项目的`plugin.xml`文件中的相应元素值：
+
+* 如果定义了`patchPluginXml`属性默认值，则无论`patchPluginXml` task是否出现在`build.gradle`文件中，都会在`plugin.xml`中patched该属性值。
+  * 例如，属性`patchPluginXml.sinceBuild`和`patchPluginXml.untilBuild`的默认值是基于`intellij.version`的声明值（或默认值）定义的。 因此，默认情况下，`patchPluginXml.sinceBuild`和`patchPluginXml.untilBuild`被替换为plugin.xml文件中`<idea-version>`元素的`since-build`和`until-build`属性。
+* 如果显式定义了`patchPluginXml`属性值，则该属性值将替换在plugin.xml中。
+  * 如果显式设置了`patchPluginXml.sinceBuild`和`patchPluginXml.untilBuild`属性，则将两者都替换在`plugin.xml`中。
+  * 如果显式设置了一个属性（例如`patchPluginXml.sinceBuild`）而没有显式设置另一个（例如`patchPluginXml.untilBuild`具有默认值），则这两个属性将按各自的值（显式和默认）进行修补。
+* 为了不替换`<idea-version>`元素的`since-build`和`until-build`属性，必须在`build.gradle`文件中出现以下之一：
+  * 设置`intellij.updateSinceUntilBuild = false`将禁用替换`since-build`和`until-build`属性，
+  * 或者，独立控制，请根据是否要禁用一个或两个替换来设置`patchPluginXml.sinceBuild(null)`和`patchPluginXml.untilBuild(null)`。
+
+避免混淆的最佳实践是用注释替换Gradle插件要修补的`plugin.xml`中的元素。 这样，这些参数的值不会出现在源代码的两个位置。 Gradle插件将在patching过程中添加必要的元素。 对于包含说明（例如`changeNotes`和`pluginDescription`）的那些`patchPluginXml`属性，使用HTML元素时不需要`CDATA`块。
+
+> Tip: 要维护并生成最新的变更日志，请尝试使用[Gradle变更日志插件](https://github.com/JetBrains/gradle-changelog-plugin)
+
+如向导生成的Gradle IntelliJ平台插件的组件中所述，Gradle属性`project.version`，`project.group`和`rootProject.name`均基于向导的输入生成。 但是，`gradle-intellij-plugin`不会将那些Gradle属性组合并替换为`plugin.xml`文件中的默认`<id>`和`<name>`元素。
+
+> 最佳做法是使`project.version`保持最新。 默认情况下，如果您在`build.gradle`中修改`project.version`，则Gradle插件将自动更新`plugin.xml`文件中的`<version>`值。 这种做法使所有版本声明保持同步。
+
+### <a name="用于开发的通用Gradle插件配置">用于开发的通用Gradle插件配置</a>
+
+需要使用Gradle插件属性的不同组合来创建所需的内部版本或IDE开发实例环境。
+
+#### 面向IntelliJ IDEA的插件
+
+针对IntelliJ IDEA的IntelliJ Platform插件具有最直接的Gradle插件配置。
+
+* 确定用于构建插件项目的IntelliJ IDEA版本； 这是IntelliJ平台的理想版本。 这可以是EAP（默认），也可以由[内部版本号范围](https://jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html)确定。
+  * 如果需要IntelliJ IDEA的生产版本，请相应地设置`intellij version`属性。
+  * 设置必要的插件依赖项（如果有）。
+* 如果应在基于相同IntelliJ IDEA版本的IDE开发实例中运行或调试插件项目，则无需为IDE开发实例设置其他属性。 这是默认行为，也是最常见的用例。
+  * 如果应基于IntelliJ Platform的替代版本在IDE开发实例中运行或调试插件项目，请相应地设置“`Running DSL`”属性。
+  * 如果应使用IDE开发实例的默认值以外的其他JetBrains运行时来运行插件项目，请指定JetBrains运行时版本。
+* 设置用于修补plugin.xml文件的适当属性。
+
+#### 针对替代基于IntelliJ平台的IDE的插件
+
+Gradle还支持开发插件以在基于IntelliJ平台的IDE中运行。 有关更多信息，请参见“[Developing for Multiple Products](https://jetbrains.org/intellij/sdk/docs/products/dev_alternate_products.html)”页面。
+
+
 
 
 ## <a name="参考文献">参考文献</a>
