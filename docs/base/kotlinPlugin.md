@@ -155,3 +155,5 @@ intellij {
 ## <a name="参考文献">参考文献</a>
 
 [Kotlin for Plugin Developers](https://jetbrains.org/intellij/sdk/docs/tutorials/kotlin.html)
+
+[MvpAutoCodePlus](https://github.com/longforus/MvpAutoCodePlus)
