@@ -12,6 +12,8 @@
   * [维护树结构一致性](#维护树结构一致性)
   * [Whitespaces and Imports](#WhitespacesandImports)
   * [结合PSI和文档修改](#结合PSI和文档修改)
+* [PSI Cookbook](#PSICookbook)
+  * [Java Specific](#JavaSpecific)
 * [参考文献](#参考文献)
 
 ## <a name="导航PSI">导航PSI</a>
@@ -170,6 +172,67 @@ PSI修改方法不会限制您构建结果树结构的方式。例如，当使�
 ### <a name="结合PSI和文档修改">结合PSI和文档修改</a>
 
 在某些情况下，您需要执行PSI修改，然后对刚通过PSI修改过的文档执行操作（例如，启动实时模板）。 在这种情况下，您需要调用一个特殊的方法来完成基于PSI的后处理（例如格式化）并将更改提交给文档。 您需要调用的方法为 `doPostponedOperationsAndUnblockDocument()`，它是在 `PsiDocumentManager` 类中定义的。
+
+## <a name="PSICookbook">PSI Cookbook</a>
+
+列出了与PSI（程序结构接口）一起使用的最常用操作的配方列表。 与开发自定义语言插件不同，它讨论使用现有语言（例如Java）的PSI。
+
+如果我知道文件名但不知道路径，如何找到它？
+```java
+FilenameIndex.getFilesByName()
+```
+
+我如何找到使用特定PSI元素的位置？
+```java
+ReferencesSearch.search()
+```
+
+如何重命名PSI元素？
+```java
+RefactoringFactory.createRename()
+```
+
+如何使虚拟文件的PSI重建？
+```java
+FileContentUtil.reparseFiles()
+```
+
+### <a name="JavaSpecific">Java Specific</a>
+
+如何找到类的所有继承者？
+```java
+ClassInheritorsSearch.search()
+```
+
+如何通过qualified name查找类？
+```java
+JavaPsiFacade.findClass()
+```
+
+如何通过短名查找类？
+```java
+PsiShortNamesCache.getInstance().getClassesByName()
+```
+
+如何找到Java类的超类？
+```java
+PsiClass.getSuperClass()
+```
+
+如何获得对Java类包含包的引用？
+```java
+PsiJavaFile javaFile = (PsiJavaFile) psiClass.getContainingFile();
+PsiPackage pkg = JavaPsiFacade.getInstance(project).findPackage(javaFile.getPackageName());
+```
+or
+```java
+com.intellij.psi.util.PsiUtil.getPackageName()
+```
+
+如何找到覆盖特定方法的方法？
+```java
+OverridingMethodsSearch.search()
+```
 
 ## <a name="参考文献">参考文献</a>
 
