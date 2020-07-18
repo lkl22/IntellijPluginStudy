@@ -12,6 +12,10 @@
   * [通过Gradle插件控制下载](#通过Gradle插件控制下载)
   * [Patching the Plugin Configuration File](#PatchingthePluginConfigurationFile)
   * [用于开发的通用Gradle插件配置](#用于开发的通用Gradle插件配置)
+* [Publishing Plugins with Gradle](#PublishingPluginswithGradle)
+  * [Building Distribution](#BuildingDistribution)
+  * [Providing Your Hub Permanent Token to Gradle](#ProvidingYourHubPermanentTokentoGradle)
+  * [Deploying a Plugin with Gradle](#DeployingPluginwithGradle)
 * [参考文献](#参考文献)
 
 ## <a name="简介">简介</a>
@@ -276,8 +280,78 @@ IntelliJ Platform的每个版本都有对应的`JetBrains Runtime`版本。 通�
 
 Gradle还支持开发插件以在基于IntelliJ平台的IDE中运行。 有关更多信息，请参见“[Developing for Multiple Products](https://jetbrains.org/intellij/sdk/docs/products/dev_alternate_products.html)”页面。
 
+## <a name="PublishingPluginswithGradle">Publishing Plugins with Gradle</a>
 
+配置Gradle支持后，您可以自动构建插件并将其部署到JetBrains插件存储库。 要自动部署插件，您需要至少已将插件发布到插件存储库一次。 请参阅指南页面，以便首次手动发布插件。
 
+### <a name="BuildingDistribution">Building Distribution</a>
+
+对于手动分发或本地安装，请调用`gradle buildPlugin` target以创建插件分发。 生成的`JAR/ZIP`位于构建/发行版中，然后可以[手动安装](https://www.jetbrains.com/help/idea/managing-plugins.html#installing-plugins-from-disk)或上载到自定义插件存储库。
+
+### <a name="ProvidingYourHubPermanentTokentoGradle">Providing Your Hub Permanent Token to Gradle</a>
+
+要将插件部署到JetBrains插件存储库，您需要提供您的 [JetBrains Hub Permanent Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html)。
+
+使用以下选项通过Gradle提供`Hub Permanent Token`的两个选项：
+* 环境变量
+* Gradle任务的参数
+
+#### Using Environment Variables
+
+首先定义一个环境变量，例如：
+```shell
+export ORG_GRADLE_PROJECT_intellijPublishToken='YOUR_HUB_TOKEN_HERE'
+```
+> 在macOS系统上，`.bash_profile`中定义的环境变量仅对从bash运行的进程可见。 所有进程可见的环境变量需要在[Environment.plist](https://developer.apple.com/library/archive/qa/qa1067/_index.html)中定义
+
+现在，在运行配置中提供用于在本地运行`publishPlugin`任务的环境变量。 为此，创建一个Gradle运行配置（如果尚未完成），选择您的Gradle项目，指定`publishPlugin`任务，然后添加环境变量。
+```groovy
+publishPlugin {
+  token = System.getenv("ORG_GRADLE_PROJECT_intellijPublishToken")
+}
+```
+
+> 请注意，您仍然需要在Gradle属性中放置一些默认值（可以为空），否则会出现编译错误。
+
+#### Using Parameters for the Gradle Task
+
+与使用环境变量类似，您也可以将token作为参数传递给Gradle任务。 例如，您可以在命令行上提供参数 `-Dorg.gradle.project.intellijPublishToken=YOUR_HUB_TOKEN_HERE` 或将其放在Gradle运行配置的参数中。
+
+> 注意，在这种情况下，您仍然需要在Gradle属性中放入一些默认值。
+
+### <a name="DeployingPluginwithGradle">Deploying a Plugin with Gradle</a>
+
+部署插件的第一步是确认它可以正常工作。 您可能希望通过在目标IDE的新实例上从磁盘安装插件来验证这一点。
+
+#### Publishing a Plugin
+
+一旦确定插件可以按预期工作，请确保插件版本已更新，因为JetBrains插件存储库将不接受具有相同版本的多个工件。
+
+要将新版本的插件部署到JetBrains插件存储库，请执行以下Gradle命令：
+```shell script
+gradle publishPlugin
+```
+
+现在，检查您的插件的最新版本是否出现在JetBrains插件存储库中。 如果成功部署，则在验证了更新之后，会立即通知当前在IntelliJ平台的合格版本上安装了插件的所有用户可用的新更新。
+
+#### 指定发布渠道
+
+您还可以通过配置`publishPlugin.channels`属性，将插件部署到您选择的发行渠道。 例如：
+```groovy
+publishPlugin {
+    channels 'beta'
+}
+```
+
+如果为空，它将使用默认的插件存储库，所有JetBrains插件存储库用户均可使用。**但是，您可以发布到任意命名的频道。这些非默认发布渠道被视为单独的存储库**。
+
+使用非默认发布渠道时，用户需要在其IDE中配置新的自定义插件存储库以安装您的插件。例如，如果您将`publishPlugin.channels`指定为“`canary`”，则用户需要添加`https://plugins.jetbrains.com/plugins/canary/list`存储库以安装插件并接收更新。
+
+热门频道名称包括：
+
+* **alpha**: https://plugins.jetbrains.com/plugins/alpha/list
+* **beta**: https://plugins.jetbrains.com/plugins/beta/list
+* **eap**: https://plugins.jetbrains.com/plugins/eap/list
 
 ## <a name="参考文献">参考文献</a>
 
