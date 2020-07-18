@@ -7,6 +7,11 @@
     * [Contributed References](#ContributedReferences)
     * [References with Optional or Multiple Resolve Results](#ReferenceswithOptionalMultipleResolveResults)
     * [Searching for References](#SearchingforReferences)
+* [Modifying the PSI](#ModifyingthePSI)
+  * [Creating the New PSI](#CreatingtheNewPSI)
+  * [维护树结构一致性](#维护树结构一致性)
+  * [Whitespaces and Imports](#WhitespacesandImports)
+  * [结合PSI和文档修改](#结合PSI和文档修改)
 * [参考文献](#参考文献)
 
 ## <a name="导航PSI">导航PSI</a>
@@ -104,6 +109,67 @@ Contributing引用是扩展现有语言的最常见方法之一。 例如，即�
 
 要使用 `ReferencesSearch` 执行搜索，请指定要搜索的元素以及其他可选参数，例如需要在其中搜索reference的scope。 创建的 `Query` 允许一次获得所有结果，或者一次又一次地遍历结果。 后者允许在找到第一个（匹配）结果后立即停止处理。
 
+## <a name="ModifyingthePSI">Modifying the PSI</a>
+
+PSI是源代码的可读写表示，表示为与源文件的结构相对应的元素树。 **您可以通过添加，替换和删除PSI元素来修改PSI**。
+
+要执行这些操作，请使用 `PsiElement.add()`，`PsiElement.delete()` 和 `PsiElement.replace()` 之类的方法，以及 `PsiElement` 接口中定义的其他方法，这些方法使您可以在单个操作中处理多个元素，或在树中指定需要添加元素的确切位置。
+
+> 与 `document` 操作一样，PSI修改也需要包装在写操作和命令中（因此只能在事件分发线程中执行）。 有关[命令和写入操作](https://jetbrains.org/intellij/sdk/docs/basics/architectural_overview/documents.html#what-are-the-rules-of-working-with-documents)的更多信息，请参见文档文章。
+
+### <a name="CreatingtheNewPSI">Creating the New PSI</a>
+
+通常添加到树中或替换现有PSI元素的PSI元素通常是根据文本创建的。在一般的情况下，可以使用 `PsiFileFactory` 的 `createFileFromText()` 方法创建一个新文件，该文件包含需要添加到树中或用作现有元素的替换的代码构造，并遍历结果树以查找您需要的特定元素，然后将该元素传递给 `add()` 或 `replace()`。
+
+大多数语言提供了工厂方法，使您可以更轻松地创建特定的代码构造。例如，`PsiJavaParserFacade` 类包含诸如 `createMethodFromText()` 之类的方法，该方法从给定的文本创建Java方法。
+
+当您实现与现有代码一起使用的重构，意图或检查快速修复程序时，传递给各种 `createFromText()` 方法的文本将合并硬编码的片段和从现有文件获取的代码片段。对于较小的代码片段（单个标识符），您只需将现有代码中的文本附加到要构建的代码片段的文本中即可。在这种情况下，您需要确保结果文本在语法上是正确的，否则 `createFromText()` 方法将引发异常。
+
+对于较大的代码片段，最好分几步进行修改：
+* 从文本创建替换树片段，为用户代码片段保留占位符；
+* 用用户代码片段替换占位符；
+* 用替换树替换原始源文件中的元素。
+
+这样可以确保保留用户代码的格式，并且所做的修改不会引起任何不必要的空格更改。
+
+作为此方法的示例，请参见 `ComparingReferencesInspection` 示例中的quickfix：
+```java
+// binaryExpression holds a PSI expression of the form "x == y", which needs to be replaced with "x.equals(y)"
+PsiBinaryExpression binaryExpression = (PsiBinaryExpression) descriptor.getPsiElement();
+IElementType opSign = binaryExpression.getOperationTokenType();
+PsiExpression lExpr = binaryExpression.getLOperand();
+PsiExpression rExpr = binaryExpression.getROperand();
+
+// Step 1: Create a replacement fragment from text, with "a" and "b" as placeholders
+PsiElementFactory factory = JavaPsiFacade.getInstance(project).getElementFactory();
+PsiMethodCallExpression equalsCall =
+    (PsiMethodCallExpression) factory.createExpressionFromText("a.equals(b)", null);
+
+// Step 2: replace "a" and "b" with elements from the original file
+equalsCall.getMethodExpression().getQualifierExpression().replace(lExpr);
+equalsCall.getArgumentList().getExpressions()[0].replace(rExpr);
+
+// Step 3: replace a larger element in the original file with the replacement tree
+PsiExpression result = (PsiExpression) binaryExpression.replace(equalsCall);
+```
+
+> 就像 `IntelliJ Platform API` 中的其他地方一样，传递给 `createFileFromText()` 和其他 `createFromText()` 方法的文本必须仅使用 `\n` 作为行分隔符。
+
+### <a name="维护树结构一致性">维护树结构一致性</a>
+
+PSI修改方法不会限制您构建结果树结构的方式。例如，当使用Java类时，即使Java解析器永远不会产生表示方法主体的结构，也可以将for语句（for语句始终是 `PsiCodeBlock` 的子级）添加为 `PsiMethod` 元素的直接子代。产生不正确的树结构的修改似乎可以起作用，但是稍后将导致问题和异常。 因此，您始终需要确保使用PSI修改操作构建的结构与解析所构建的代码时解析器所生成的结构相同。
+
+为了确保您不会引入不一致之处，可以调用 `PsiTestUtil.checkFileStructure()` 来测试修改PSI的操作。此方法可确保您构建的结构与解析器生成的结构相同。
+
+### <a name="WhitespacesandImports">Whitespaces and Imports</a>
+
+使用PSI修改功能时，切勿从文本创建单个空格节点（空格或换行符）。 取而代之的是，**所有空格修改均由格式化程序执行，该格式化程序遵循用户选择的代码样式设置**。 格式化会在每个命令的末尾自动执行，并且如果需要，您还可以使用 `CodeStyleManager` 类中的 `Reformat(PsiElement)` 方法手动执行格式化。
+
+另外，在使用Java代码（或使用具有类似 `import` 机制的其他语言的代码，例如`Groovy`或`Python`）时，切勿手动创建 `imports`。 相反，您应该在生成的代码中插入标准名称，然后在 `JavaCodeStyleManager`（或所用语言的等效API）中调用 `shortClassReferences()` 方法。 这样可以确保根据用户的代码样式设置创建 `imports` 并将其插入文件的正确位置。
+
+### <a name="结合PSI和文档修改">结合PSI和文档修改</a>
+
+在某些情况下，您需要执行PSI修改，然后对刚通过PSI修改过的文档执行操作（例如，启动实时模板）。 在这种情况下，您需要调用一个特殊的方法来完成基于PSI的后处理（例如格式化）并将更改提交给文档。 您需要调用的方法为 `doPostponedOperationsAndUnblockDocument()`，它是在 `PsiDocumentManager` 类中定义的。
 
 ## <a name="参考文献">参考文献</a>
 
