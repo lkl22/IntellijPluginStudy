@@ -7,6 +7,7 @@ open第三方开源plugin项目时，需要在项目根目录下的*.iml文件�
 
 * [编写你的第一个plugin Hello World](./docs/base/helloWorld.md)
 * [Building Plugins with Gradle](./docs/base/gradlePlugin.md)
+* [Kotlin for Plugin Developers](./docs/base/kotlinPlugin.md)
 * [Action机制](./docs/base/action.md)
 * [插件开发之Editor](./docs/base/editor.md)
 * [打印日志，查看日志](./docs/base/log.md)
