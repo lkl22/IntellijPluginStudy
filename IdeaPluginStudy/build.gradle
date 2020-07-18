@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.21'
+}
+
+group 'com.lkl.plugin'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly fileTree(dir: "$IntellijCompilePath/plugins/java/lib", include: ['*.jar'])
+    compileOnly fileTree(dir: "$IntellijCompilePath/lib", include: ['*.jar'])
+
+    testCompile fileTree(dir: "$IntellijCompilePath/plugins/java/lib", include: ['*.jar'])
+    testCompile fileTree(dir: "$IntellijCompilePath/lib", include: ['*.jar'])
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version '2019.3'
+    plugins 'java'
+}
+patchPluginXml {
+    changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
