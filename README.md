@@ -17,6 +17,7 @@ open第三方开源plugin项目时，需要在项目根目录下的*.iml文件�
 程序结构接口（通常称为PSI）是IntelliJ平台中的一层，负责解析文件并创建语法和语义代码模型，以支持该平台的许多功能。
 
 * [介绍](./docs/psi/introduction.md)
+* [PSI使用](./docs/psi/use.md)
 * [PsiAugmentProvider](./docs/psi/psiAugmentProvider.md)
 * [StructureViewExtension](./docs/psi/structureViewExtension.md)
 
