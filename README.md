@@ -26,6 +26,7 @@ open第三方开源plugin项目时，需要在项目根目录下的*.iml文件�
 * [IntelliJ Plugin Development introduction: PersistStateComponent](./docs/advanced/persistStateComponent.md)
 * [IntelliJ Plugin Development introduction: ApplicationConfigurable, ProjectConfigurable](./docs/advanced/applicationConfigurable.md)
 * [generate-tostring](./docs/advanced/generateTostring.md)
+* [代码检查 Code Inspections](./docs/advanced/codeInspections.md)
 
 ## 参考文献
 

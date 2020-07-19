@@ -1,3 +1,5 @@
 rootProject.name = 'IntellijPluginStudy'
 include 'IdeaPluginStudy'
 include 'MvpAutoCode'
+include 'ComparingReferencesInspection'
+
